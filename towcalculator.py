@@ -14,7 +14,7 @@ def payloadcheck(availablepayload):
 
 # check if over/under GCVWR
 def gcvwcheck(towcapacity, newgcvw):
-    if newgcvw >= towcapacity:
+    if newgcvw <= towcapacity:
         print("Acceptable! With combined weight of {}".format(newgcvw))
         print("You are under your GCVWR by {}".format(towcapacity - newgcvw))
         return True
@@ -58,9 +58,10 @@ def getdata():
     # hitch weight = defined by manufacturer, listed in manual or sticker on the trailer
     hitchwt = int(input("Trailer hitch weight: "))
 
-    availablepayload = payload - (passengerwt + cargo + hitchwt)
-    newgvw = truckdrywt + hitchwt + passengerwt + cargo
-    newgcvw = trailergvwr - hitchwt + newgvw
+    actualpayload = cargo + passengerwt + hitchwt
+    availablepayload = payload - actualpayload
+    newgvw = truckdrywt + actualpayload
+    newgcvw = trailergvwr + truckdrywt + actualpayload
 
     print("\nWith the {} towing the {}: ".format(vehicle, trailer))
 
@@ -75,7 +76,7 @@ def main():
 
     getdata()
 
-    print("\nDon't forget to check the capacity of your tires and gross axle weight ratings (GAWR).")
+    print("\nThis does not account for tires or gross axle weight ratings (GAWR).")
     print("==================================================")
 
 main()
